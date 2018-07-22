@@ -76,6 +76,19 @@ func UpdateTask(taskValue Task) (error) {
 	})
 }
 
+func DeleteTask(id uint64) (error) {
+
+	return db.Update(func(tx *bolt.Tx) error {
+
+		bucket := tx.Bucket(bucketName)
+
+		b := make([]byte, 8)
+		binary.BigEndian.PutUint64(b, id)
+
+		return bucket.Delete(b)
+	})
+}
+
 func AddTask(taskValue Task) (error) {
 
 	return db.Update(func(tx *bolt.Tx) error {
